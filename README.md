@@ -39,4 +39,4 @@ The key analysis in our study can be grouped into 5 major categories:
 
 ** 5. OPLS model **
 
-“OPLS.md” is a tutorial for the OPLS model.
+“OPLS.txt” is a tutorial for the OPLS model.
