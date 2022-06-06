@@ -1,5 +1,3 @@
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
 library(lme4)
 library(sjstats)
 library(car)
