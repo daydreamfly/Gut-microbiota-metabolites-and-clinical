@@ -1,7 +1,3 @@
-#用于使用DMM模型判断肠型
-
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
 library("vegan")
 library("ggplot2")
 library("parallel")
@@ -15,9 +11,7 @@ output_dir <- "Results/genus"
 
 dat_taxa <- read.table(dat_tab,header = T ,row.names = 1,sep="\t",check.names=F)
 
-
 #########
-#拟合 DMM 模型
 counts <- dat_taxa*100000
 counts <- as.matrix(counts)
 count_1 <- t(counts)
@@ -25,8 +19,6 @@ count_1 <- t(counts)
 set.seed(0)
 
 fit <- mclapply(1:5, dmn, count=count_1, verbose=TRUE, seed = 1)
-
-#判断拟合效果
 lplc <- sapply(fit, laplace)
 
 ##Model Fit figure.
@@ -41,7 +33,7 @@ coll <- mixture(best)
 col <- apply(coll,1,which.max)
 col <- data.frame(ID = names(col),cluster = col)
 
-#NMDS plot可视化
+#NMDS plot
 swiss.x <- dat_taxa
 swiss.x <- sweep(swiss.x,2,apply(swiss.x,2,sum),"/")
 
@@ -93,23 +85,18 @@ p2 <- ggplot(tax_dat_1,aes(cluster,value,fill = cluster)) +
               panel.grid  = element_blank()
         ) +
         facet_wrap(.~tax,ncol = 5,scales = "free_y")
-
 LE <- max(nchar(as.character(tax_dat_1$tax)))
 w = length(levels(tax_dat_1$cluster)) * 3 + 4 + LE*0.08
-
 ggsave(paste0(output_dir,"_Top.10.abundance_taxa.pdf"), p2, width = w, height = 6)
 
 ############################################
-
 best_1 <- fitted(best)
-
 best_dat <- melt(best_1)
 colnames(best_dat) <- c("Tax", "cluster", "value")
 
 L <- c()
 PT <- list()
 for (i in seq(ncol(fitted(best)))) {
-
   cluster_dat <- subset(best_dat,cluster == i)
   cluster_dat <- cluster_dat[order(cluster_dat$value,decreasing = T),]
   cluster_dat$Tax <- factor(cluster_dat$Tax ,levels = rev(unique(cluster_dat$Tax)))
@@ -117,10 +104,8 @@ for (i in seq(ncol(fitted(best)))) {
   if(dim(cluster_dat)[1]>10){
 	cluster_dat <- cluster_dat[1:10,]
   }
-  
   tax <- cluster_dat$Tax[which.max(cluster_dat$value)]
   L<- c(L,as.character(tax))
-  
   p <- ggplot(cluster_dat, aes(x = Tax, y = value)) +
     	geom_bar(stat = "identity") +
     	coord_flip() +
@@ -132,18 +117,6 @@ for (i in seq(ncol(fitted(best)))) {
           	panel.grid.major.x = element_line(linetype = "dashed")
     	) +
     	theme(axis.text = element_text(color = "black"))
-
   ggsave(paste0(output_dir,"_cluster_",i,".pdf"),p,w = 7,height = 3)
-
 }
-
-best_2 <- as.data.frame(best_1)
-names(best_2) <- paste0("cluster_",1:dim(best_2)[2])
-best_2$Sum <- rowSums(best_2)
-best_2 <- best_2[order(best_2$Sum,decreasing = T),]
-best_2 <- subset(best_2,select = -c(Sum))
-best_2 <- data.frame(Tax = rownames(best_2),best_2)
-write.table(best_2,paste0(output_dir,"_assignment_strength.txt"),row.names = F,quote = F,sep = '\t')
-
-
 
