@@ -1,12 +1,7 @@
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
 library(rmcorr)
 library(openxlsx)
-rm(list = ls())
-
 metabo.cli <- read.xlsx(paste("Data/","Data_for_rmcorr.xlsx", sep = ""))
 metabo.cli$variable <- as.factor(metabo.cli$variable)
-
 result.r <- matrix(NA, nrow = (ncol(metabo.cli) - 5), ncol = 3)
 result.p <- matrix(NA, nrow = (ncol(metabo.cli) - 5), ncol = 3)
 rownames(result.r) <- colnames(metabo.cli)[c(6:ncol(metabo.cli))]
@@ -23,5 +18,3 @@ for(m in 3:5){ #3:14
 }
 write.table(result.p, paste("Results/","Rmcorr.p.txt", sep = ""))
 write.table(result.r,paste("Results/","Rmcorr.r.txt", sep = ""))
-
-
