@@ -1,5 +1,3 @@
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
 library(rmcorr)
 library(openxlsx)
 rm(list = ls())
