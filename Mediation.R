@@ -1,8 +1,6 @@
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(mediation)
 library(openxlsx)
 rm(list = ls())
-
 data <- read.xlsx(paste("Data/","Data_for_mediation.xlsx", sep = ""))
 data <- data.frame(data[,c(1:2)], apply(data[,-c(1:2)], 2, function(x) x = x*1000/sum(x, na.rm = T)))
 data <- data[-which(rowSums(is.na(data)) > 0),] 
