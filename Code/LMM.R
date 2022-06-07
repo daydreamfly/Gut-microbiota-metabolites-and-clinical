@@ -2,6 +2,7 @@ library(lme4)
 library(sjstats)
 library(car)
 options(stringsAsFactors = F, warn = -1)
+
 data <- openxlsx::read.xlsx(paste("Data/","Data_for_LMM.xlsx", sep = ""))
 index <- colnames(data)
 result <- data.frame(p = numeric(),stringsAsFactors=FALSE)
