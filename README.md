@@ -40,10 +40,6 @@ The key analysis in our study can be grouped into 5 major categories:
 
 “Mediation.R” is a script for investigating the associations between predictor and mediator and the associations among predictor, mediator, and outcome.
 
-** 4. Dirichlet multinomial mixture model**
-
-“DMM.R” is a script for investigating the community type of each fecal metagenomic sample.
-
-** 5. OPLS model **
+** 4. OPLS model **
 
 “OPLS.txt” is a tutorial for the OPLS model.
