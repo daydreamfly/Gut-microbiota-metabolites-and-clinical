@@ -16,7 +16,6 @@ rmcorr
 
 mediation
 
-DirichletMultinomial 
 
 # Software (Windows system)
 
